@@ -56,7 +56,7 @@ class ServiceNowConnector {
    *   Will be HTML text if hibernating instance.
    * @param {error} callback.error - The error property of callback.
    */
-  get(callOptions, callback) {
+  get(callback) {
     let getCallOptions = { ...this.options };
     getCallOptions.method = 'GET';
     getCallOptions.query = 'sysparm_limit=1';
@@ -178,7 +178,7 @@ processRequestResults(error, response, body, callback) {
  *   Will be HTML text if hibernating instance.
  * @param {error} callback.error - The error property of callback.
  */
- post(callOptions, callback) {
+ post(callback) {
   let postCallOptions = {... this.options };
   postCallOptions.method = 'POST';
   this.sendRequest(postCallOptions, (results, error) => callback(results, error));
