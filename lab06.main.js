@@ -119,7 +119,7 @@ healthcheck(callback) {
         callback(error);
     }
     this.emitOffline(); 
-    console.error(`\nError returned from :\n${this.id}`);
+    console.error(`\nError returned from :\n${this.id} :\n${JSON.stringify(error)}`);
 
    } else {
      /**
@@ -137,7 +137,7 @@ healthcheck(callback) {
           callback(result);
       }
       this.emitOnline(); 
-      console.log(`\nResponse returned`);
+      console.log(`\nResponse returned :\n${JSON.stringify(result)}`);
    }
  });
 }
@@ -196,33 +196,8 @@ healthcheck(callback) {
      * get() takes a callback function.
      */ 
 
-    
-     this.connector.get((data, error) => {
-         if(typeof data === "object" && Object.keys(data).includes('body')) { 
-            let bodyResults = JSON.parse(data.body);
-            let bodyArray = bodyResults.result;
-            let validArray = [];
-            bodyArray.forEach(element => {
-                let thomasObject = {
-                    change_ticket_number: element.number,
-                    active: element.active,
-                    priority: element.priority,
-                    description: element.description,
-                    work_start: element.work_start, 
-                    work_end: element.work_end,
-                    change_ticket_key: element.sys_id
-                }; 
-                validArray.push(thomasObject);
-            }); 
-
-            return callback(validArray, null);
-         } 
-
-         
-     }); 
-     
-    
-}
+    this.connector.get(callback);
+    }
 
   /**
    * @memberof ServiceNowAdapter
@@ -241,25 +216,7 @@ healthcheck(callback) {
      * post() takes a callback function.
      */
 
-    this.connector.post((data, error) => {
-         if(typeof data === "object" && Object.keys(data).includes('body')) { 
-            let bodyResults = JSON.parse(data.body);
-            let element = bodyResults.result;
-            element = {
-                    change_ticket_number: element.number,
-                    active: element.active,
-                    priority: element.priority,
-                    description: element.description,
-                    work_start: element.work_start, 
-                    work_end: element.work_end, 
-                    change_ticket_key: element.sys_id
-                }; 
-
-            return callback(element, null);
-         } 
-
-         
-     }); 
+    this.connector.post(callback);
   }
 }
 
